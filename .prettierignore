@@ -1,0 +1,28 @@
+# Json project specifics
+package.json
+package-lock.json
+angular.json
+tslint.json
+tsconfig.json
+tsconfig.*.json
+.prettierrc.json
+
+# Templating
+*.scss
+*.html
+
+# Generated data
+dist
+data
+versions.json
+**/node_modules/
+
+# OS + IDE
+.vscode
+.idea
+.DS_Store
+*.log
+
+# Others
+*.yml
+*.md

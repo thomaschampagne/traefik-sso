@@ -1,0 +1,60 @@
+<div [ngStyle]="getStyle(appConfig?.styles.body)"
+     class="d-flex h-100 justify-content-center align-items-center">
+    <form #loginForm="ngForm" *ngIf="isAuthenticated === false"
+          class="d-flex h-100 w-100 justify-content-center align-items-center">
+        <div [ngStyle]="getStyle(appConfig?.styles.form)"
+             class="d-flex flex-column justify-content-center align-items-center">
+
+            <div [innerHtml]="sanitize(appConfig?.labels.welcomeTitle)"
+                 [ngStyle]="getStyle(appConfig?.styles.welcomeTitle)"></div>
+
+            <div class="form-group w-75">
+                <div [class.input-group-lg]="isSmallScreen" class="input-group">
+                    <div *ngIf="!isSmallScreen" class="input-group-prepend">
+                        <div class="input-group-text" id="username">
+                            <bi class="align-text-top" name="person"></bi>
+                        </div>
+                    </div>
+                    <input #username="ngModel" [(ngModel)]="authenticatingUser.username"
+                           [class.is-invalid]="username.touched && username.invalid" autofocus
+                           class="form-control"
+                           name="username" placeholder="{{appConfig?.labels.placeholders.username}}"
+                           required="required"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group w-75">
+                <div [class.input-group-lg]="isSmallScreen" class="input-group">
+                    <div *ngIf="!isSmallScreen" class="input-group-prepend">
+                        <span class="input-group-text" id="password"><bi name="key"></bi></span>
+                    </div>
+                    <input #password="ngModel" [(ngModel)]="authenticatingUser.password"
+                           [class.is-invalid]="password.touched && password.invalid"
+                           class="form-control"
+                           name="password" placeholder="{{appConfig?.labels.placeholders.password}}"
+                           required="required"
+                           type="password">
+                </div>
+            </div>
+            <div class="d-flex justify-content-center w-75 mt-3">
+                <button (click)="onSubmit(username.value, password.value)"
+                        [class.btn-lg]="isSmallScreen"
+                        [disabled]="!username.value || !password.value || (loginForm.invalid && loginForm.touched)"
+                        [ngStyle]="getStyle(appConfig?.styles.loginButton)"
+                        class="w-100 btn btn-primary"
+                        type="submit">
+                    {{appConfig?.labels.loginButtonText}}
+                </button>
+            </div>
+            <div [ngStyle]="getStyle(appConfig?.styles.authFailure)">
+                <span *ngIf="authenticationFailureMessage">{{authenticationFailureMessage}}</span>
+            </div>
+        </div>
+    </form>
+    <div *ngIf="isAuthenticated" [innerHtml]="sanitize(appConfig?.labels.authenticatedText)"
+         [ngStyle]="getStyle(appConfig?.styles.authSuccess)"
+         class="d-flex flex-column justify-content-center align-items-center">
+    </div>
+</div>
+
+<div (@fade.done)="onFadeDone($event)" @fade class="login-box-mask"></div>

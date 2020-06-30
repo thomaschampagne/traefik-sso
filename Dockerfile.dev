@@ -1,0 +1,11 @@
+FROM node:lts-alpine
+LABEL maintener="Thomas Champagne"
+ENV DOCKER true
+WORKDIR /workspace
+VOLUME /workspace
+VOLUME /data
+VOLUME /logs
+EXPOSE 3000/tcp
+RUN apk --no-cache update \
+    && apk --no-cache upgrade
+CMD npm start

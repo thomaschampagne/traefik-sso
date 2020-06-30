@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  traefik:
+    extra_hosts:
+      - sso.${DOMAIN}:127.0.0.1
+  traefik-sso:
+    image: traefik-sso:dev
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ${PWD}:/workspace/

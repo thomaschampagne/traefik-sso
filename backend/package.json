@@ -1,0 +1,79 @@
+{
+    "keywords": [],
+    "scripts": {
+        "start": "npm run build:watch",
+        "build": "npm run build:versions-metadata && rollup -c rollup.config.ts",
+        "build:prod": "npm run build -- --environment TARGET_ENV:prod",
+        "build:watch": "npm run build -- -w",
+        "build:versions-metadata": "node -e \"const frontend = require('../frontend/package-lock.json');const backend = require('./package-lock.json');const project = require('../package.json');console.log(JSON.stringify({ app: project.version, 'express': backend.dependencies.express.version, 'jsonwebtoken': backend.dependencies.jsonwebtoken.version, 'helmet': backend.dependencies.helmet.version, angular: frontend.dependencies['@angular/core'].version, 'bootstrap': frontend.dependencies.bootstrap.version }, null, 2));\" > ./src/versions.json",
+        "test": "jest --coverage",
+        "test:watch": "jest --coverage --watch",
+        "test:prod": "npm run lint && npm run test -- --no-cache",
+        "lint": "tslint --project tsconfig.json --fix"
+    },
+    "jest": {
+        "transform": {
+            ".(ts|tsx)": "ts-jest"
+        },
+        "testEnvironment": "node",
+        "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js"
+        ],
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/test/"
+        ],
+        "coverageThreshold": {
+            "global": {
+                "branches": 90,
+                "functions": 95,
+                "lines": 95,
+                "statements": 95
+            }
+        },
+        "collectCoverageFrom": [
+            "src/*.{js,ts}"
+        ]
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^13.0.0",
+        "@rollup/plugin-json": "^4.1.0",
+        "@rollup/plugin-node-resolve": "^8.1.0",
+        "@rollup/plugin-typescript": "^5.0.1",
+        "@types/bcryptjs": "^2.4.2",
+        "@types/cookie-parser": "^1.4.2",
+        "@types/express": "^4.17.6",
+        "@types/helmet": "0.0.47",
+        "@types/jest": "^26.0.3",
+        "@types/js-base64": "^2.3.2",
+        "@types/jsonwebtoken": "^8.5.0",
+        "@types/lodash": "^4.14.157",
+        "@types/node": "^14.0.14",
+        "jest": "^26.1.0",
+        "jest-config": "^26.1.0",
+        "rollup": "^2.18.1",
+        "rollup-plugin-terser": "^6.1.0",
+        "shelljs": "^0.8.4",
+        "ts-jest": "^26.1.1",
+        "ts-node": "^8.10.2",
+        "tslint": "^6.1.2",
+        "typescript": "^3.9.5",
+        "typescript-json-schema": "^0.42.0"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "cookie-parser": "^1.4.5",
+        "express": "^4.17.1",
+        "helmet": "^3.23.3",
+        "js-base64": "^2.6.2",
+        "jsonwebtoken": "^8.5.1",
+        "lodash": "^4.17.19",
+        "node-json-db": "^1.1.0",
+        "reflect-metadata": "^0.1.13",
+        "tsyringe": "^4.3.0"
+    }
+}

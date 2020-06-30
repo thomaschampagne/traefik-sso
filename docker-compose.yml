@@ -1,0 +1,70 @@
+version: '3.8'
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    command:
+      - --log.level=INFO                                  # Set for this compose demo file. Remove/replace with your own.
+      - --log.filePath=/var/log/traefik/traefik.log       # Set for this compose demo file. Remove/replace with your own.
+      - --accesslog=true                                  # Set for this compose demo file. Remove/replace with your own.
+      - --accesslog.filepath=/var/log/traefik/access.log  # Set for this compose demo file. Remove/replace with your own.
+      - --api.insecure=true                               # Set for this compose demo file. Remove/replace with your own.
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80                     # Edit/remove/replace with your own. E.g. 443
+    ports:
+      - 80:80                                             # Edit/remove/replace with your own. E.g. 443:443
+    expose:
+      - 8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${PWD}/traefik-logs/:/var/log/traefik/
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.service=traefik
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+
+  traefik-sso:
+    image: thomaschampagne/traefik-sso:latest
+    container_name: sso
+    hostname: sso
+    expose:
+      - 3000
+    environment:
+      - DOMAIN=${DOMAIN}
+      - SECRET=${SECRET}
+      - LOG_LEVEL=${LOG_LEVEL}
+    volumes:
+      - ${PWD}/data/:/data/
+      - ${PWD}/logs/:/logs/
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.sso.rule=Host(`sso.${DOMAIN}`)
+      - traefik.http.routers.sso.entrypoints=web
+
+  foo: # Sample demo container. Remove/replace with your own.
+    image: containous/whoami
+    container_name: foo
+    hostname: iamfoo
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.foo.rule=Host(`iamfoo.${DOMAIN}`)
+      - traefik.http.routers.foo.entrypoints=web
+      - traefik.http.middlewares.foo-auth.forwardauth.address=http://sso.${DOMAIN}/auth
+      - traefik.http.middlewares.foo-auth.forwardauth.trustForwardHeader=true
+      - traefik.http.middlewares.foo-auth-target.headers.customrequestheaders.x-redirect-to=http://iamfoo.${DOMAIN}
+      - traefik.http.routers.foo.middlewares=foo-auth-target,foo-auth
+  bar: # Sample demo container. Replace with your own.
+    image: containous/whoami
+    container_name: bar
+    hostname: iambar
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.bar.rule=Host(`iambar.${DOMAIN}`)
+      - traefik.http.routers.bar.entrypoints=web
+      - traefik.http.middlewares.bar-auth.forwardauth.address=http://sso.${DOMAIN}/auth
+      - traefik.http.middlewares.bar-auth.forwardauth.trustForwardHeader=true
+      - traefik.http.middlewares.bar-auth-target.headers.customrequestheaders.x-redirect-to=http://iambar.${DOMAIN}
+      - traefik.http.routers.bar.middlewares=bar-auth-target,bar-auth

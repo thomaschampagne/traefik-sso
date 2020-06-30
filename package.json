@@ -1,0 +1,82 @@
+{
+    "name": "traefik-sso",
+    "version": "0.1.0",
+    "description": "Implements a straightforward SSO authentication for your containers behind your Traefik v2 proxy",
+    "scripts": {
+        "build": "npm run clean && npm run build:back && npm run build:front",
+        "build:prod": "npm run clean && npm run build:back:prod && npm run build:front:prod",
+        "start": "npm run clean && concurrently npm:watch:back npm:watch:front npm:serve:dev",
+        "test": "echo Not implemented && exit 1",
+        "serve:dev": "wait-on dist/main.js && cross-env TARGET_ENV=dev nodemon ./dist/main.js",
+        "serve:prod": "cross-env TARGET_ENV=prod node dist/main.js",
+        "docker:dev:build": "docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml build && docker image prune -f",
+        "docker:dev:up": "cross-env PWD=./ docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up",
+        "docker:dev:down": "cross-env PWD=./ docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml down",
+        "clean": "node ./node_modules/del-cli/cli.js ./dist/",
+        "postinstall": "cd ./backend/ && npm install && cd ../frontend/ && npm install && cd ../ && npm run audit:fix",
+        "audit:fix": "npm audit fix && cd ./backend/ && npm audit fix && cd ../frontend/",
+        "wipe": "npm run clean && node ./node_modules/del-cli/cli.js ./backend/node_modules/ ./frontend/node_modules/ ./node_modules/",
+        "watch:back": "cd ./backend/ && npm run build:watch",
+        "watch:front": "cd ./frontend/ && npm run build:watch",
+        "build:back": "cd ./backend/ && npm run build",
+        "build:front": "cd ./frontend/ && npm run build",
+        "build:back:prod": "cd ./backend/ && npm run build:prod",
+        "build:front:prod": "cd ./frontend/ && npm run build:prod",
+        "prettier": "prettier --write ."
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "/data/*",
+            "/workspace/dist/spa"
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/thomaschampagne/traefik-sso.git"
+    },
+    "engines": {
+        "node": ">=12"
+    },
+    "keywords": [
+        "traefik",
+        "sso",
+        "docker",
+        "auth"
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    },
+    "config": {
+        "unsafe-perm": true
+    },
+    "author": {
+        "name": "Thomas Champagne",
+        "email": "th.champagne@gmail.com",
+        "web": "https://thomaschampagne.github.io"
+    },
+    "maintainers": [
+        {
+            "name": "Thomas Champagne",
+            "email": "th.champagne@gmail.com",
+            "web": "https://thomaschampagne.github.io"
+        }
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/thomaschampagne/traefik-sso/issues"
+    },
+    "homepage": "https://github.com/thomaschampagne/traefik-sso#readme",
+    "readme": "README.md",
+    "devDependencies": {
+        "concurrently": "^5.2.0",
+        "cross-env": "^7.0.2",
+        "del-cli": "^3.0.0",
+        "nodemon": "^2.0.4",
+        "prettier": "^2.0.5",
+        "wait-on": "^5.1.0",
+        "husky": "^4.2.5",
+        "pretty-quick": "^2.0.1"
+    }
+}

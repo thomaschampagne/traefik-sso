@@ -1,0 +1,18 @@
+{
+    "typeRoots": [
+        "../backend/node_modules/@types",
+        "../frontend/node_modules/@types"
+    ],
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "target": "esnext",
+        "module": "esnext",
+        "lib": [
+            "esnext",
+            "dom"
+        ],
+        "strict": true,
+        "sourceMap": false,
+        "declaration": false
+    }
+}
