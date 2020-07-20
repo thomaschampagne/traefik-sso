@@ -1,7 +1,7 @@
 {
     "name": "traefik-sso",
     "version": "0.1.0",
-    "description": "Implements a straightforward SSO authentication for your containers behind your Traefik v2 proxy",
+    "description": "Docker image implementing a straightforward Single Sign-On authentication for your containers behind a Traefik v2 edge router",
     "scripts": {
         "build": "npm run clean && npm run build:back && npm run build:front",
         "build:prod": "npm run clean && npm run build:back:prod && npm run build:front:prod",
