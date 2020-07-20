@@ -116,4 +116,4 @@ npm run docker:dev:up
 docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up
 ```
 
-4 - Now follow steps from "Local demo" section, you have the same container environment but in development 😊.
+4 - Now follow steps from [local demo](#local-demo) section, you have same environment but in development 😊.
