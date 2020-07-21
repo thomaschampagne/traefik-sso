@@ -18,28 +18,23 @@ export class HashPasswordController extends BaseController {
     }
 
     public register(app: Express): void {
-        app.get(HashPasswordController.ROUTE, (req: Request, res: Response) => {
-            if (req.query.credentials) {
-                const credentials = (req.query.credentials as string).split(/:(.+)/);
-
-                if (credentials) {
-                    const username = credentials[0];
-                    const plainPassword = credentials[1];
-
-                    if (username && plainPassword) {
-                        const user = new User(
-                            username,
-                            this.authService.hashPassword(plainPassword)
-                        );
-                        res.json(user).end();
-                        return;
-                    }
-                }
+        app.post(HashPasswordController.ROUTE, (req: Request, res: Response) => {
+            if (!req.body.username) {
+                throw new InvalidParameterException('Please provide a username');
             }
 
-            throw new InvalidParameterException(
-                `No proper credentials given in query parameters. Please provide them with \'?credentials=username:password\' in the url`
-            );
+            if (!req.body.password) {
+                throw new InvalidParameterException('Please provide a password');
+            }
+
+            const username = req.body.username;
+            const plainPassword = req.body.password;
+
+            if (username && plainPassword) {
+                const user = new User(username, this.authService.hashPassword(plainPassword));
+                res.json(user).end();
+                return;
+            }
         });
     }
 }
