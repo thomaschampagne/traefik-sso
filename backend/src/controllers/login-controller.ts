@@ -49,7 +49,7 @@ export class LoginController extends BaseController {
                 res.status(HttpStatus.OK).end();
 
                 this.logger.info(
-                    `HTTP/1.1 ${HttpStatus.OK} OK`,
+                    `HTTP/2 ${HttpStatus.OK} OK`,
                     `client@${Utils.getSourceIp(req)} is authenticated with username: ${
                         req.body.username
                     }`

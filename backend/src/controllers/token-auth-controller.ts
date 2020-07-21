@@ -42,7 +42,7 @@ export class TokenAuthController extends BaseController {
                         const token: Token = { jwt: userJwtToken };
                         res.status(HttpStatus.OK).json(token).end();
                         this.logger.debug(
-                            `HTTP/1.1 ${HttpStatus.OK} OK`,
+                            `HTTP/2 ${HttpStatus.OK} OK`,
                             `client@${sourceIp} authenticated with a valid token`
                         );
                     },

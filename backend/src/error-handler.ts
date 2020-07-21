@@ -37,17 +37,17 @@ export const ErrorHandler = (
     if (error instanceof AuthException) {
         apiError.status = HttpStatus.UNAUTHORIZED;
         apiError.printBody = false;
-        logger.warn(`HTTP/1.1 ${HttpStatus.UNAUTHORIZED} Unauthorized`, errorMessage);
+        logger.warn(`HTTP/2 ${HttpStatus.UNAUTHORIZED} Unauthorized`, errorMessage);
     } else if (error instanceof InvalidParameterException) {
         apiError.status = HttpStatus.BAD_REQUEST;
-        logger.debug(`HTTP/1.1 ${HttpStatus.BAD_REQUEST} Bad request`, errorMessage);
+        logger.debug(`HTTP/2 ${HttpStatus.BAD_REQUEST} Bad request`, errorMessage);
     } else if (error instanceof AppConfigException) {
-        logger.error(`HTTP/1.1 ${HttpStatus.SERVER_ERROR} Server error`, errorMessage);
+        logger.error(`HTTP/2 ${HttpStatus.SERVER_ERROR} Server error`, errorMessage);
         apiError.status = HttpStatus.SERVER_ERROR;
     } else {
         apiError.message = UNHANDLED_ERROR_MESSAGE;
         apiError.handled = false;
-        logger.error(`HTTP/1.1 ${HttpStatus.SERVER_ERROR} Server error`, errorMessage);
+        logger.error(`HTTP/2 ${HttpStatus.SERVER_ERROR} Server error`, errorMessage);
     }
 
     const response = res.status(apiError.status);

@@ -25,7 +25,7 @@ export class LogoutController extends BaseController {
             this.authService.clearAuthCookie(res);
             res.redirect(Constants.APP_BASE_HREF);
             this.logger.debug(
-                `HTTP/1.1 ${HttpStatus.OK} OK`,
+                `HTTP/2 ${HttpStatus.OK} OK`,
                 `client@${Utils.getSourceIp(req)} initiated logout procedure`
             );
         });

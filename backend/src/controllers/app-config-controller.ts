@@ -23,7 +23,7 @@ export class AppConfigController extends BaseController {
     public register(app: Express): void {
         app.get(AppConfigController.ROUTE, (req: Request, res: Response, next) => {
             this.logger.debug(
-                `HTTP/1.1 ${HttpStatus.OK} OK`,
+                `HTTP/2 ${HttpStatus.OK} OK`,
                 `client@${Utils.getSourceIp(req)} is getting remote app configuration`
             );
             this.appConfigService.loadConfig().then(
