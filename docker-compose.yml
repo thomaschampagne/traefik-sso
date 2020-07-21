@@ -35,6 +35,8 @@ services:
     environment:
       - DOMAIN=${DOMAIN}
       - SECRET=${SECRET}
+      - TOKEN_MAX_AGE=${TOKEN_MAX_AGE}
+#      - COOKIE_NAME=${COOKIE_NAME}
       - LOG_LEVEL=${LOG_LEVEL}
     volumes:
       - ${PWD}/data/:/data/
