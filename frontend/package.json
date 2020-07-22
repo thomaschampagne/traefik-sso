@@ -1,5 +1,6 @@
 {
     "scripts": {
+        "postinstall": "ngcc",
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build",
