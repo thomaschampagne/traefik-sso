@@ -11,12 +11,13 @@ import { LoggerService } from './logger/logger.service';
 @Injectable()
 export class AuthService {
     private static readonly LOGIN_API_PATH = '/login';
+    private static readonly LOGOUT_API_PATH = '/logout';
     private static readonly TOKEN_AUTH_API_PATH = '/auth';
 
     constructor(
-        private httpClient: HttpClient,
-        private appConfigService: AppConfigService,
-        private logger: LoggerService
+        private readonly httpClient: HttpClient,
+        private readonly appConfigService: AppConfigService,
+        private readonly logger: LoggerService
     ) {}
 
     public isAlreadyAuthorized(): Promise<boolean> {
@@ -71,6 +72,10 @@ export class AuthService {
                     return Promise.reject(error);
                 });
             });
+    }
+
+    public logout(): void {
+        window.location.replace(location.origin + AuthService.LOGOUT_API_PATH);
     }
 
     private getRedirectUrl(): Promise<string> {

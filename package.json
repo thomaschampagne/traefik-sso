@@ -9,7 +9,7 @@
         "test": "echo Not implemented && exit 1",
         "serve:dev": "wait-on dist/main.js && cross-env TARGET_ENV=dev nodemon ./dist/main.js",
         "serve:prod": "cross-env TARGET_ENV=prod node dist/main.js",
-        "docker:dev:build": "docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml build && docker image prune -f",
+        "docker:dev:build": "cross-env PWD=./ docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml build && docker image prune -f",
         "docker:dev:up": "cross-env PWD=./ docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up",
         "docker:dev:down": "cross-env PWD=./ docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml down",
         "clean": "node ./node_modules/del-cli/cli.js ./dist/",

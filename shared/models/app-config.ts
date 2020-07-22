@@ -13,6 +13,7 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
         authenticatedText:
             'You\'re authenticated.<br/>Apps in the current domain protected by this sso are now reachable.<br/><br/><i style="font-size: 16px; color: dodgerblue;">(You can change all texts and styles from the "config.json" file)</i>',
         loginButtonText: 'Login',
+        logoutButtonText: 'Logout',
         placeholders: {
             username: 'Username',
             password: 'Password'
@@ -64,9 +65,10 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
                 marginBottom: '25px'
             }
         },
+        logoutButton: {},
         authSuccess: {
             defaultScreenStyle: {
-                backgroundColor: 'white',
+                backgroundColor: 'red',
                 textAlign: 'center',
                 padding: '40px',
                 fontSize: '22px'

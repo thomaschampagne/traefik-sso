@@ -5,6 +5,7 @@ export interface AppStyles {
     form?: AppResponsiveStyles;
     welcomeTitle?: AppResponsiveStyles;
     loginButton?: AppResponsiveStyles;
+    logoutButton?: AppResponsiveStyles;
     authSuccess?: AppResponsiveStyles;
     authFailure?: AppResponsiveStyles;
 }

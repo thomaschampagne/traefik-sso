@@ -13,7 +13,7 @@ export class LogoutController extends BaseController {
     public static readonly ROUTE: string = '/logout';
 
     constructor(
-        @inject(AuthService) private authService: AuthService,
+        @inject(AuthService) private readonly authService: AuthService,
         @inject(AppService) appService: AppService,
         @inject(LoggerService) private readonly logger: LoggerService
     ) {
@@ -23,9 +23,9 @@ export class LogoutController extends BaseController {
     public register(app: Express): void {
         app.get(LogoutController.ROUTE, (req: Request, res: Response) => {
             this.authService.clearAuthCookie(res);
-            res.redirect(Constants.APP_BASE_HREF);
+            res.status(HttpStatus.NO_CONTENT).redirect(Constants.APP_BASE_HREF);
             this.logger.debug(
-                `HTTP/2 ${HttpStatus.OK} OK`,
+                `HTTP/2 ${HttpStatus.NO_CONTENT} NO_CONTENT`,
                 `client@${Utils.getSourceIp(req)} initiated logout procedure`
             );
         });

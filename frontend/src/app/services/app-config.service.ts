@@ -11,9 +11,9 @@ export class AppConfigService {
     private appConfig: AppConfig;
 
     constructor(
-        private sanitizer: DomSanitizer,
-        private httpClient: HttpClient,
-        private logger: LoggerService
+        private readonly sanitizer: DomSanitizer,
+        private readonly httpClient: HttpClient,
+        private readonly logger: LoggerService
     ) {
         this.appConfig = null;
     }

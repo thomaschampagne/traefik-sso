@@ -31,9 +31,9 @@ export class AppComponent implements OnInit {
     public isAuthenticated: boolean;
 
     constructor(
-        private appConfigService: AppConfigService,
-        private authService: AuthService,
-        private breakpointObserver: BreakpointObserver
+        private readonly appConfigService: AppConfigService,
+        private readonly authService: AuthService,
+        private readonly breakpointObserver: BreakpointObserver
     ) {
         this.isAuthenticated = null;
         this.isAppConfigFetched = false;
@@ -98,5 +98,9 @@ export class AppComponent implements OnInit {
         if (this.isAppConfigFetched) {
             $event.element.remove();
         }
+    }
+
+    public onLogout(): void {
+        this.authService.logout();
     }
 }

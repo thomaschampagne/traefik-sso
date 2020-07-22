@@ -51,9 +51,18 @@
             </div>
         </div>
     </form>
-    <div *ngIf="isAuthenticated" [innerHtml]="sanitize(appConfig?.labels.authenticatedText)"
-         [ngStyle]="getStyle(appConfig?.styles.authSuccess)"
+    <div *ngIf="isAuthenticated" [ngStyle]="getStyle(appConfig?.styles.authSuccess)"
          class="d-flex flex-column justify-content-center align-items-center">
+        <div [innerHtml]="sanitize(appConfig?.labels.authenticatedText)"></div>
+        <div class="d-flex justify-content-center w-75 mt-3">
+            <button (click)="onLogout()"
+                    [class.btn-lg]="isSmallScreen"
+                    [ngStyle]="getStyle(appConfig?.styles.logoutButton)"
+                    class="w-100 btn btn-primary"
+                    type="button">
+                {{appConfig?.labels.logoutButtonText}}
+            </button>
+        </div>
     </div>
 </div>
 
