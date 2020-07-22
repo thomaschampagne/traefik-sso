@@ -1,16 +1,9 @@
 import { AppLabels } from './app-labels';
-import { AppResponsiveStyles } from './app-responsive-styles';
+import { AppStyles } from './app-styles';
 
 export interface AppConfig {
     labels?: AppLabels;
-    styles?: {
-        body?: AppResponsiveStyles;
-        form?: AppResponsiveStyles;
-        welcomeTitle?: AppResponsiveStyles;
-        loginButton?: AppResponsiveStyles;
-        authSuccess?: AppResponsiveStyles;
-        authFailure?: AppResponsiveStyles;
-    };
+    styles?: AppStyles;
 }
 
 export const DEFAULT_APP_CONFIG: AppConfig = {
