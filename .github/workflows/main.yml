@@ -20,7 +20,11 @@ jobs:
           echo Running on branch ${GITHUB_REF}
 
           DOCKER_IMAGE=thomaschampagne/traefik-sso
-          DOCKER_PLATFORMS=linux/amd64
+          DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386
+
+          if [[ $GITHUB_REF == refs/heads/dev ]]; then
+              DOCKER_PLATFORMS=linux/amd64
+          fi
 
           if [[ $GITHUB_REF == refs/heads/master ]]; then
               VERSION=latest
