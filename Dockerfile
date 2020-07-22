@@ -14,7 +14,8 @@ ENV DOCKER true
 VOLUME /data
 VOLUME /logs
 RUN apk --no-cache update \
-    && apk --no-cache upgrade
+    && apk --no-cache upgrade \
+    && rm -rf /var/cache/apk/*
 WORKDIR /app
 COPY --from=builder /build/dist/ .
 EXPOSE 3000/tcp

@@ -7,5 +7,6 @@ VOLUME /data
 VOLUME /logs
 EXPOSE 3000/tcp
 RUN apk --no-cache update \
-    && apk --no-cache upgrade
+    && apk --no-cache upgrade \
+    && rm -rf /var/cache/apk/*
 CMD npm start
