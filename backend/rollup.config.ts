@@ -21,7 +21,9 @@ const EXTERNALS = [
     'util',
     'stream',
     'zlib',
-    'string_decoder'
+    'string_decoder',
+    'child_process',
+    'timers'
 ];
 
 export default {

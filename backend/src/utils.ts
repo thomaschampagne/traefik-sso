@@ -35,6 +35,10 @@ export class Utils {
         return path.normalize(filePath);
     }
 
+    public static dirname(filePath: string): string {
+        return path.dirname(filePath);
+    }
+
     public static getSourceIp(req: Request): string {
         return (req.headers['x-forwarded-for'] || req.connection.remoteAddress || '')
             .toString()

@@ -9,6 +9,9 @@ export class Constants {
     public static readonly LOG_PATH = Utils.normalizePath(
         `${Constants.APP_PATH}/../logs/traefik-sso.log`
     );
+    public static readonly LOG_ROTATE_MAX_FILE_SIZE = '5M'; // rotates the file when size exceeds 5 MegaBytes
+    public static readonly LOG_ROTATE_INTERVAL = '1d'; // rotates every day at midnight
+    public static readonly LOG_ROTATE_KEEP_FILES_COUNT = 60; // keep 60 rolling files
     public static readonly APP_BASE_HREF = '/';
     public static readonly SPA_PATH = Utils.normalizePath(`${Constants.APP_PATH}/spa`);
     public static readonly PORT = 3000;

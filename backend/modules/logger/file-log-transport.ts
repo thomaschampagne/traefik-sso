@@ -1,14 +1,9 @@
 import { LogTransport } from './log-transport';
-import { appendFile, appendFileSync } from 'fs';
+import rfs, { RotatingFileStream } from 'rotating-file-stream';
+import { Utils } from '../../src/utils';
+import { Constants } from '../../src/constants';
 
 export class FileLogTransport extends LogTransport {
-    private static readonly DEFAULT_SEPARATOR = '\t';
-    private static readonly APPEND_ASYNC = false;
-
-    private readonly path: string;
-    private readonly separator: string;
-    public readonly appendAsync: boolean;
-
     constructor(
         path: string,
         appendAsync: boolean = FileLogTransport.APPEND_ASYNC,
@@ -18,23 +13,49 @@ export class FileLogTransport extends LogTransport {
         this.path = path;
         this.appendAsync = appendAsync;
         this.separator = separator;
+
+        this.rotatingFileStream = rfs.createStream(
+            FileLogTransport.generateRollingLogFileName(this.path),
+            {
+                size: Constants.LOG_ROTATE_MAX_FILE_SIZE,
+                interval: Constants.LOG_ROTATE_INTERVAL,
+                maxFiles: Constants.LOG_ROTATE_KEEP_FILES_COUNT,
+                encoding: 'utf-8',
+                history: `${Utils.dirname(this.path)}/logrotate`
+            }
+        );
     }
 
-    public append(args: [any, ...any[]], callback?: () => void): void {
+    private static readonly DEFAULT_SEPARATOR = '\t';
+    private static readonly APPEND_ASYNC = false;
+
+    public readonly appendAsync: boolean;
+
+    private readonly path: string;
+    private readonly separator: string;
+    private rotatingFileStream: RotatingFileStream;
+
+    private static generateRollingLogFileName(
+        logPath: string
+    ): (time: number | Date, index?: number) => string {
+        return (time: number | Date, index?: number) => {
+            if (!time) {
+                return `${logPath}`;
+            }
+            const today = new Date().toISOString().slice(0, 10);
+            const extPos = logPath.lastIndexOf('.');
+            return `${logPath.substring(0, extPos)}.${today}.${index}${logPath.substring(extPos)}`;
+        };
+    }
+
+    public append(args: [any, ...any[]], callback: () => void): void {
         const logLine = this.serializeArgs(args) + '\n';
-        appendFile(this.path, logLine, err => {
-            if (err) {
-                console.error(err);
-            }
-            if (callback) {
-                callback();
-            }
-        });
+        this.rotatingFileStream.write(logLine, callback);
     }
 
     public appendSync(args: [any, ...any[]]): void {
         const logLine = this.serializeArgs(args) + '\n';
-        appendFileSync(this.path, logLine);
+        this.rotatingFileStream.write(logLine);
     }
 
     public serializeArgs(message?: any, ...optionalParams: any[]): string {
