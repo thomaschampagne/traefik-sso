@@ -68,7 +68,7 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
         logoutButton: {},
         authSuccess: {
             defaultScreenStyle: {
-                backgroundColor: 'red',
+                backgroundColor: 'white',
                 textAlign: 'center',
                 padding: '40px',
                 fontSize: '22px'
