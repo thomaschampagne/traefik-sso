@@ -20,7 +20,7 @@ export class AuthService {
         private readonly logger: LoggerService
     ) {}
 
-    public isAlreadyAuthorized(): Promise<boolean> {
+    public isAlreadyAuthenticated(): Promise<boolean> {
         return this.httpClient
             .get(AuthService.TOKEN_AUTH_API_PATH)
             .toPromise()
@@ -90,6 +90,14 @@ export class AuthService {
                     resolve(null);
                 }
             });
+        });
+    }
+
+    public redirectOnUrl(): void {
+        this.getRedirectUrl().then(redirectUrl => {
+            if (redirectUrl) {
+                location.replace(redirectUrl);
+            }
         });
     }
 }

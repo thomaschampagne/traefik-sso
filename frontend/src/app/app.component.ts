@@ -31,8 +31,8 @@ export class AppComponent implements OnInit {
     public isAuthenticated: boolean;
 
     constructor(
+        public readonly authService: AuthService,
         private readonly appConfigService: AppConfigService,
-        private readonly authService: AuthService,
         private readonly breakpointObserver: BreakpointObserver
     ) {
         this.isAuthenticated = null;
@@ -54,8 +54,11 @@ export class AppComponent implements OnInit {
             });
 
         // Check if user is already authenticated
-        this.authService.isAlreadyAuthorized().then((isAuthenticated: boolean) => {
+        this.authService.isAlreadyAuthenticated().then((isAuthenticated: boolean) => {
             this.isAuthenticated = isAuthenticated;
+            if (this.isAuthenticated) {
+                this.authService.redirectOnUrl();
+            }
         });
     }
 
