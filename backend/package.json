@@ -48,7 +48,7 @@
         "@types/express": "^4.17.6",
         "@types/helmet": "0.0.47",
         "@types/jest": "^26.0.3",
-        "@types/js-base64": "^2.3.2",
+        "@types/js-base64": "^3.0.0",
         "@types/jsonwebtoken": "^8.5.0",
         "@types/lodash": "^4.14.157",
         "@types/node": "^14.0.14",
