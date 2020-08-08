@@ -72,6 +72,9 @@ export class TokenAuthController extends BaseController {
         sourceIp: string,
         redirectUrl: string | null
     ): void {
+
+        const unauthorizedResponse = res.status(HttpStatus.UNAUTHORIZED);
+
         if (redirectUrl) {
             this.logger.debug(
                 `client@${sourceIp} is forwarded to sso login page for authentication. Redirect url will be: ${redirectUrl}`
@@ -80,9 +83,9 @@ export class TokenAuthController extends BaseController {
             const encodedRedirectUrl = `${Constants.APP_BASE_HREF}?redirect=${Base64.encode(
                 redirectUrl
             )}`;
-            res.status(HttpStatus.UNAUTHORIZED).redirect(encodedRedirectUrl);
+            unauthorizedResponse.redirect(encodedRedirectUrl);
         } else {
-            res.status(HttpStatus.UNAUTHORIZED).send();
+            unauthorizedResponse.redirect(Constants.APP_BASE_HREF);
         }
     }
 }
