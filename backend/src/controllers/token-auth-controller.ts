@@ -27,6 +27,12 @@ export class TokenAuthController extends BaseController {
             // Indicate user browser to not cache auth response
             res.set('Cache-control', `no-store, no-cache, max-age=0`);
 
+            /*    const fetchDestType = req.headers['sec-fetch-dest'];
+                if (fetchDestType && fetchDestType === 'empty') {
+                    res.status(HttpStatus.OK).end();
+                    return;
+                }*/
+
             const sourceIp = Utils.getSourceIp(req);
 
             // Getting jwt token from cookie
@@ -86,27 +92,24 @@ export class TokenAuthController extends BaseController {
             )}`;
             unauthorizedResponse.redirect(encodedRedirectUrl);
         } else {
-            // Server can't determine redirect url. Then allow client to do it through javascript execution
-            // Allow javascript for execution
-            res.header(
-                'Content-Security-Policy',
-                `script-src *.${this.appParams.domain} 'unsafe-inline';`
-            );
+            unauthorizedResponse.redirect(Constants.APP_BASE_HREF);
 
-            if (req.accepts().indexOf('text/html') !== -1) {
-                // Send JS to execute
-                res.send(
-                    `<script>
-                            // Clear page cache
-                            window.caches.keys().then(cacheKeys => Promise.all(cacheKeys.map(key => window.caches.delete(key)))).then(() => {
-                                // Redirect when cache deleted
-                                window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));
-                            }).catch(err => alert(err));
-                        </script>`
-                );
-            } else {
-                res.end();
-            }
+            // Allow allow client to do it through javascript execution
+            // res.header(
+            //     'Content-Security-Policy',
+            //     `script-src *.${this.appParams.domain} 'unsafe-inline';`
+            // );
+            //
+            // // Send JS to execute
+            // res.send(
+            //     `<script>
+            //             // Clear page cache
+            //             window.caches.keys().then(cacheKeys => Promise.all(cacheKeys.map(key => window.caches.delete(key)))).then(() => {
+            //                 // Redirect when cache deleted
+            //                 window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));
+            //             }).catch(err => alert(err));
+            //         </script>`
+            // );
         }
     }
 }
