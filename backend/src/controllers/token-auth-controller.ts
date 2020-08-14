@@ -88,10 +88,8 @@ export class TokenAuthController extends BaseController {
             )}`;
             unauthorizedResponse.redirect(encodedRedirectUrl);
         } else {
-
-            // Server can't determine redirect url. Then allow client to do it
-            const javaScriptToExecute = `<script>window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));</script>`;
-            res.send(javaScriptToExecute);
+            // Server can't determine redirect url. Then allow client to do it through javascript execution
+            res.send(`<script>window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));</script>`);
         }
     }
 }
