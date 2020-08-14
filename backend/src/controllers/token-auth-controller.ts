@@ -73,11 +73,9 @@ export class TokenAuthController extends BaseController {
         sourceIp: string,
         redirectUrl: string | null
     ): void {
-
         const unauthorizedResponse = res.status(HttpStatus.UNAUTHORIZED);
 
         if (redirectUrl) {
-
             // Let server perform the redirect
             this.logger.debug(
                 `client@${sourceIp} is forwarded to sso login page for authentication. Redirect url will be: ${redirectUrl}`
@@ -89,7 +87,16 @@ export class TokenAuthController extends BaseController {
             unauthorizedResponse.redirect(encodedRedirectUrl);
         } else {
             // Server can't determine redirect url. Then allow client to do it through javascript execution
-            res.send(`<script>window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));</script>`);
+            // Allow javascript for execution
+            res.header(
+                'Content-Security-Policy',
+                `script-src *.${this.appParams.domain} 'unsafe-inline';`
+            );
+
+            // Send JS to execute
+            res.send(
+                `<script>window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));</script>`
+            );
         }
     }
 }
