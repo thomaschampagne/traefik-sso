@@ -95,7 +95,13 @@ export class TokenAuthController extends BaseController {
 
             // Send JS to execute
             res.send(
-                `<script>window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));</script>`
+                `<script>
+                            // Clear page cache
+                            window.caches.keys().then(cacheKeys => Promise.all(cacheKeys.map(key => window.caches.delete(key)))).then(() => {
+                                // Redirect when cache deleted
+                                window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));
+                            }).catch(err => alert(err));
+                        </script>`
             );
         }
     }
