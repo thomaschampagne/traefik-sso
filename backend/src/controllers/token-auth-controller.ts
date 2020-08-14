@@ -93,16 +93,20 @@ export class TokenAuthController extends BaseController {
                 `script-src *.${this.appParams.domain} 'unsafe-inline';`
             );
 
-            // Send JS to execute
-            res.send(
-                `<script>
+            if (req.accepts().indexOf('text/html') !== -1) {
+                // Send JS to execute
+                res.send(
+                    `<script>
                             // Clear page cache
                             window.caches.keys().then(cacheKeys => Promise.all(cacheKeys.map(key => window.caches.delete(key)))).then(() => {
                                 // Redirect when cache deleted
                                 window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));
                             }).catch(err => alert(err));
                         </script>`
-            );
+                );
+            } else {
+                res.end();
+            }
         }
     }
 }
