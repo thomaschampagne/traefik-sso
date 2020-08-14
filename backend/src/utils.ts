@@ -27,7 +27,7 @@ export class Utils {
         return fs.existsSync(filePath);
     }
 
-    public static mkdir(dirPath: string): string {
+    public static mkdir(dirPath: string): void {
         return fs.mkdirSync(dirPath, { recursive: true });
     }
 

@@ -50,14 +50,14 @@ export class TokenAuthController extends BaseController {
                         this.logger.warn(
                             `client@${sourceIp} tried to authenticate with invalid token`
                         );
-                        this.forwardUserToLoginForm(res, sourceIp, redirectUrl);
+                        this.forwardUserToLoginForm(res, req, sourceIp, redirectUrl); // User not authenticated
                     }
                 );
             } else {
                 this.logger.info(
                     `client@${sourceIp} tried to authenticate without ${this.appParams.cookieName} cookie token`
                 );
-                this.forwardUserToLoginForm(res, sourceIp, redirectUrl);
+                this.forwardUserToLoginForm(res, req, sourceIp, redirectUrl); // User not authenticated
             }
         });
     }
@@ -69,6 +69,7 @@ export class TokenAuthController extends BaseController {
 
     private forwardUserToLoginForm(
         res: Response,
+        req: Request,
         sourceIp: string,
         redirectUrl: string | null
     ): void {
@@ -76,6 +77,8 @@ export class TokenAuthController extends BaseController {
         const unauthorizedResponse = res.status(HttpStatus.UNAUTHORIZED);
 
         if (redirectUrl) {
+
+            // Let server perform the redirect
             this.logger.debug(
                 `client@${sourceIp} is forwarded to sso login page for authentication. Redirect url will be: ${redirectUrl}`
             );
@@ -85,7 +88,10 @@ export class TokenAuthController extends BaseController {
             )}`;
             unauthorizedResponse.redirect(encodedRedirectUrl);
         } else {
-            unauthorizedResponse.redirect(Constants.APP_BASE_HREF);
+
+            // Server can't determine redirect url. Then allow client to do it
+            const javaScriptToExecute = `<script>window.location.replace('${req.protocol}://${req.hostname}/?redirect=' + btoa(window.location.href));</script>`;
+            res.send(javaScriptToExecute);
         }
     }
 }
