@@ -76,7 +76,7 @@
         "nodemon": "^2.0.4",
         "prettier": "^2.0.5",
         "wait-on": "^5.1.0",
-        "husky": "^4.2.5",
+        "husky": "^4.3.7",
         "pretty-quick": "^2.0.1"
     }
 }
