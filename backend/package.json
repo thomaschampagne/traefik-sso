@@ -54,7 +54,7 @@
         "@types/node": "^12",
         "jest": "^26.1.0",
         "jest-config": "^26.1.0",
-        "rollup": "^2.23.0",
+        "rollup": "^2.66.0",
         "rollup-plugin-terser": "^6.1.0",
         "shelljs": "^0.8.4",
         "ts-jest": "^26.1.3",
